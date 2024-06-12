@@ -52,13 +52,8 @@ const bookingCollection =client.db('CarRepairing').collection('booked');
   });
 
 
-
-
-
-   
-    
-
     //query user 1 email related data bar korar condition 
+
 // booked
 app.get('/booked', async(req,res)=>{
   console.log(req.query.email);
@@ -71,6 +66,7 @@ if(req.query?.email){
   res.send(result)
 })
 // create
+
 app.post('/booked' , async(req, res)=>{
   const booking=req.body;
   console.log(booking)
@@ -79,12 +75,29 @@ app.post('/booked' , async(req, res)=>{
 
 });
 // delete
+
  app.delete('/booked/:id',async(req, res)=>{
   const id =req.params.id;
   const query={_id: new  ObjectId(id)}
-  const result= bookingCollection.deleteOne(query);
+  const result= bookingCollection.deleteOne(query)
   res.send(result)
  });
+//  update
+app.patch('/booked/:id',async(req, res)=>{
+const id =req.params.id;
+const filter={_id: new ObjectId(id)}
+const updateBooking=req.body;
+console.log(updateBooking)
+
+   const updateDoc = {
+                $set: {
+                    status: updateBooking.status
+                },
+            };
+     const result = await bookingCollection.updateOne(filter, updateDoc);
+      res.send(result);
+
+})
 
 
     // Send a ping to confirm a successful connection
