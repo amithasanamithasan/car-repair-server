@@ -70,7 +70,7 @@ async function run() {
     const serviceCollection=client.db('CarRepairing').collection('service');
 const bookingCollection =client.db('CarRepairing').collection('booked');
     
-// auth related api
+// auth related api login
 
 app.post('/jwt', logger,async (req, res) =>{
   const user=req.body;
@@ -81,10 +81,20 @@ app.post('/jwt', logger,async (req, res) =>{
   res
   .cookie('token',token,{
     httpOnly:true,
-    secure:false,
+    secure:true,
+    sameSite:'none'
   })
   .send({success:true})
   })
+
+// Uaer logout api token
+
+app.post('/logout', async(req,res)=>{
+  const user =req.body;
+  console.log('logging out ',user);
+  res.clearCookie('token',{maxAge: 0}).send({success:true})
+})
+
 
 
 // services related api
